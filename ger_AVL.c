@@ -10,7 +10,7 @@ typedef struct aux {
 	TIPOCHAVE chave;
 	struct aux *esq;
 	struct aux *dir;
-	int bal; // fator de balanceamento (0, -1 ou +1) => alt. direita - alt. esquerda
+	int bal; // fator de balanceamento (0, -1 ou +1) => alt.  direita - alt. esquerda
 } NO, *PONT;
 
 /* cria um novo (aloca memoria e preenche valores) no com chave=ch e retorna 

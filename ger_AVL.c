@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h> 
 #define true 1
 #define false 0
 
@@ -385,3 +386,10 @@ void inicializar(PONT * raiz){
 	*raiz = NULL;
 }
 
+
+
+
+//adicionando o main da minha Árvore
+int main(){
+    
+}

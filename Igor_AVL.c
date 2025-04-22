@@ -11,11 +11,10 @@ typedef struct aux {
 	TIPOCHAVE chave;
 	struct aux *esq;
 	struct aux *dir;
-	int bal; // fator de balanceamento (0, -1 ou +1) => alt.  direita - alt. esquerda
+	int bal; 
 } NO, *PONT;
 
-/* cria um novo (aloca memoria e preenche valores) no com chave=ch e retorna 
-       seu endereco */
+
 PONT criarNovoNo(TIPOCHAVE ch){
 	PONT novoNo = (PONT)malloc(sizeof(NO));
 	novoNo->esq = NULL;
@@ -26,20 +25,18 @@ PONT criarNovoNo(TIPOCHAVE ch){
 }
 
 
-// Retorna o maior valor entre dois inteiros
 int max(int a, int b){
 	if (a>b) return a;
 	return b;
 }
 
-// Retorna a altura de uma (sub-)arvore
 int altura(PONT p){
 	if (!p) return -1;
 	else return 1 + max(altura(p->esq),altura(p->dir));
 }
 
 
-/* Exibe arvore Em Ordem         */
+
 void exibirArvoreEmOrdem(PONT raiz){
 	if (raiz == NULL) return;
 	exibirArvoreEmOrdem(raiz->esq);
@@ -47,7 +44,7 @@ void exibirArvoreEmOrdem(PONT raiz){
 	exibirArvoreEmOrdem(raiz->dir);
 }
 
-/* Exibe arvore Pre Ordem         */
+
 void exibirArvorePreOrdem(PONT raiz){
 	if (raiz == NULL) return;
 	printf("%i ",raiz->chave);
@@ -55,7 +52,6 @@ void exibirArvorePreOrdem(PONT raiz){
 	exibirArvorePreOrdem(raiz->dir);
 }
 
-/* Exibe arvore Pos Ordem         */
 void exibirArvorePosOrdem(PONT raiz){
 	if (raiz == NULL) return;
 	exibirArvorePreOrdem(raiz->esq);
@@ -63,7 +59,6 @@ void exibirArvorePosOrdem(PONT raiz){
 	printf("%i ",raiz->chave);
 }
 
-/* Exibe arvore Em Ordem (com parenteses para os filhos)    */
 void exibirArvore(PONT raiz){
 	if (raiz == NULL) return;
 	printf("%i[%i]",raiz->chave,raiz->bal);
@@ -73,11 +68,13 @@ void exibirArvore(PONT raiz){
 	printf(")");     
 }
 
+void EspaçosAVL(int contador){
+    for(int i=0; i<contador; i++)
+    printf(" ");
+}
+void imprimirDesenho(PONT raiz, int){
 
-
-/* Rotações à direita (LL e LR) 
-   Retornará o endereço do nó que será a nova raiz da subárvore originalmente 
-   iniciada por p */
+}
 PONT rotacaoL(PONT p){
 	printf("Rotacao a esquerda, problema no no: %i\n",p->chave);
 	PONT u, v;
@@ -100,10 +97,10 @@ PONT rotacaoL(PONT p){
 		else u->bal = 0;
 		v->bal = 0;
 		return v;
-	}else{   // caso necessario apenas para a exclusao (u->bal == 0)
+	}else{   
 		p->esq = u->dir;
 		u->dir = p;
-		// p->bal = -1;    desnecessario pois o balanceamento de p nao chegou a ser mudado para -2
+	
 		u->bal = 1;
 		return u;
 	}
@@ -132,22 +129,16 @@ PONT rotacaoR(PONT p){
 		else u->bal = 0;
 		v->bal = 0;
 		return v;
-	}else{   // caso necessario apenas para a exclusao (u->bal == 0)
+	}else{   
 		p->dir = u->esq;
 		u->esq = p;
 		u->bal = -1;
-		// p->bal = 1;    desnecessario pois o balanceamento de p nao chegou a ser mudado para 2
+
 		return u;	
 	}
 }
 
-/* 
-   Inserção AVL: 
-   - O parâmetro pp é um ponteiro para o nó raiz (ou para o ponteiro do nó atual).
-   - O parâmetro ch é a chave a ser inserida.
-   - O parâmetro alterou indica se a altura (ou fator de balanceamento) da subárvore foi alterada 
-     pela inserção (inicialmente, deve ser false).
-*/
+
 void inserirAVL(PONT* pp, TIPOCHAVE ch, bool* alterou){
     // p aponta para o nó atual da subárvore
     PONT p = *pp;
@@ -217,8 +208,7 @@ void inserirAVL(PONT* pp, TIPOCHAVE ch, bool* alterou){
 
 
 
-/* retorna o endereco do NO que contem chave=ch ou NULL caso a chave nao seja
-       encontrada. Utiliza busca binaria recursiva                                */
+                             */
 PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
 	if (raiz == NULL) return NULL;
 	if (raiz->chave == ch) return raiz;
@@ -228,7 +218,6 @@ PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
 }  
 
 
-// Busca binária não recursiva devolvendo o nó pai
 PONT buscaNo(PONT raiz, TIPOCHAVE ch, PONT *pai){
 	PONT atual = raiz;
 	*pai = NULL;
@@ -242,8 +231,7 @@ PONT buscaNo(PONT raiz, TIPOCHAVE ch, PONT *pai){
 	return(NULL);
 }
 
-/* Auxilir da funcao excluirChave, procura a maior chave menor que a chave que 
-   serah excluida            */
+
 PONT maiorAEsquerda(PONT p, PONT *ant){
   *ant = p;
   p = p->esq;
@@ -255,15 +243,7 @@ PONT maiorAEsquerda(PONT p, PONT *ant){
 }
 
 
-/* 
-   exclui a chave com valor igual a ch 
-   Parâmetros:
-     - raiz: ponteiro para o ponteiro do nó raiz (ou nó corrente) da subárvore.
-     - ch: a chave a ser excluída.
-     - alterou: variável booleana que indica se a altura da subárvore foi alterada após a exclusão.
-   Retorna:
-     - true se a exclusão foi realizada; false caso contrário.
-*/
+
 bool excluirAVL(PONT* raiz, TIPOCHAVE ch, bool* alterou) {
     // Pega o nó atual apontado por *raiz
     PONT atual = *raiz;
@@ -362,10 +342,6 @@ bool excluirAVL(PONT* raiz, TIPOCHAVE ch, bool* alterou) {
     return res;
 }
 
-
-
-
-/* funcao auxiliar na destruicao (liberacao da memoria) de uma arvore */
 void destruirAux(PONT subRaiz){
 	if (subRaiz){
 		destruirAux(subRaiz->esq);
@@ -374,19 +350,15 @@ void destruirAux(PONT subRaiz){
 	}
 }
 
-/* libera toda memoria de uma arvore e coloca NULL no valor da raiz    */
+
 void destruirArvore(PONT * raiz){
 	destruirAux(*raiz);
 	*raiz = NULL;
 }
 
-
-/* inicializa arvore: raiz=NULL */
 void inicializar(PONT * raiz){
 	*raiz = NULL;
 }
-
-
 
 int main(){
     PONT raiz;

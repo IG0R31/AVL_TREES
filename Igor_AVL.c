@@ -72,6 +72,7 @@ void EspacosAVL(int contador){
     for(int i=0; i<contador; i++)
     printf(" ");
 }
+
 void imprimirDesenho(PONT raiz, int espaco){
     if(raiz== NULL)
     return;
@@ -94,6 +95,7 @@ void imprimirDesenho(PONT raiz, int espaco){
             printf("\\\n");
         }
     imprimirDesenho(raiz->esq, espaco);
+    }
 }   
 
 
@@ -382,6 +384,8 @@ void inicializar(PONT * raiz){
 	*raiz = NULL;
 }
 
+
+
 int main(){
     PONT raiz;
     inicializar(&raiz);
@@ -391,9 +395,13 @@ int main(){
 
     do{
         printf("Escolha uma das opções:\n");
-        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Sair\n");
+        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Sair\n");
         scanf("%d", &opcao);
 
+        if(opcao<=0 || opcao>6){
+            printf("Por favor escolha um das opções abaixo");
+            continue;;  
+        }
         switch(opcao){
             case 1:    
                 printf("Digite o valor da chave: ");
@@ -428,14 +436,22 @@ int main(){
                     printf("Chave %d não encontrada! ", chave);
                 }
                 break;
-            
+                
             case 5:
+                printf("Esta é a representação em desenho da AVL: \n\n");
+                imprimirDesenho(raiz,0);
+                printf("\n");
+                break;
+
+            
+            case 6:
                 printf("Ok, finalizando o programa...");
                 printf("Obrigado :)");
                 break;
         }
-    }while (opcao != 5);
+    }while (opcao != 6);
 
     destruirArvore(&raiz);
     return 0;
 }
+

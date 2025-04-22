@@ -68,13 +68,35 @@ void exibirArvore(PONT raiz){
 	printf(")");     
 }
 
-void EspaçosAVL(int contador){
+void EspacosAVL(int contador){
     for(int i=0; i<contador; i++)
     printf(" ");
 }
-void imprimirDesenho(PONT raiz, int){
+void imprimirDesenho(PONT raiz, int espaco){
+    if(raiz== NULL)
+    return;
 
-}
+    espaco+= 5;
+    imprimirDesenho(raiz->dir, espaco);
+
+    printf("\n");
+    EspacosAVL(espaco - 5);
+    printf("%d\n", raiz-> chave);
+
+    if(raiz->esq !=NULL|| raiz->dir != NULL){
+        EspacosAVL(espaco - 3);
+        if(raiz->esq !=NULL && raiz->dir != NULL)
+            printf("/   \\\n");
+        else if (raiz->esq !=NULL){
+            printf("/\n");
+        }
+        else if(raiz-> dir!= NULL){
+            printf("\\\n");
+        }
+    imprimirDesenho(raiz->esq, espaco);
+}   
+
+
 PONT rotacaoL(PONT p){
 	printf("Rotacao a esquerda, problema no no: %i\n",p->chave);
 	PONT u, v;

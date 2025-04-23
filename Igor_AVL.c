@@ -231,8 +231,6 @@ void inserirAVL(PONT* pp, TIPOCHAVE ch, bool* alterou){
 }
 
 
-
-                             */
 PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
 	if (raiz == NULL) return NULL;
 	if (raiz->chave == ch) return raiz;
@@ -417,25 +415,29 @@ int main(){
                 printf("\n");
                 break;
             
-            case 3:
-                printf("Digite a chave a ser buscada: ");
-                scanf("%d", &chave);
-                PONT resultado = buscaBinaria(chave,raiz);
-                if(resultado){
-                    printf("Chave %d não encontrado ",chave);
-                }            
-                break;
-            
-            case 4: 
-                printf("Digite a chave para ser excluída: ");
-                scanf("%d",&chave );
-                alterou = false;
-                if(excluirAVL(&raiz, chave, &alterou)){
-                    printf("Chave %d foi excluída!! ", chave);
-                }else{
-                    printf("Chave %d não encontrada! ", chave);
+                case 3: {
+                    printf("Digite a chave a ser buscada: ");
+                    scanf("%d", &chave);
+                    PONT resultado = buscaBinaria(chave,raiz);
+                    if(resultado){
+                        printf("Chave %d encontrada!\n", chave);
+                    } else {
+                        printf("Chave %d não encontrada!\n", chave);
+                    }
+                    break;
                 }
-                break;
+                
+            
+                case 4: 
+                    printf("Digite a chave para ser excluída: ");
+                    scanf("%d", &chave);
+                    alterou = false;
+                    if (excluirAVL(&raiz, chave, &alterou)) {
+                        printf("Chave %d foi excluída!!\n", chave);
+                    } else {
+                        printf("Chave %d não encontrada!\n", chave);
+                    }
+                    break;
                 
             case 5:
                 printf("Esta é a representação em desenho da AVL: \n\n");

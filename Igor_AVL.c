@@ -104,12 +104,42 @@ int  contadorNos(PONT raiz)
     return 1 + contadorNos(raiz->esq) + contadorNos(raiz->dir);
 }
 
-
 int contadorFolhas(PONT raiz)
 {
     if (raiz == NULL) return 0;
     if (raiz->esq == NULL && raiz->dir == NULL) return 1;
     return contadorFolhas(raiz->esq) + contadorFolhas(raiz->dir);
+}
+
+int nivelNo(PONT raiz, int chave, int nivel){
+    if(raiz== NULL)return -1;
+    if (raiz->chave == chave)return nivel;
+    int esq =nivelNo(raiz->esq,chave,  nivel+1);
+    if(esq != -1){
+        return esq;
+    }
+    return nivelNo(raiz->dir, chave, nivel+1);
+}
+
+int altura(PONT raiz){
+    if (raiz== NULL)return -1;
+    int altEsq = altura(raiz->esq);
+    int altDir = altura(raiz->dir);
+    return(altEsq> altDir> ? altEsq: altDir);
+}
+
+int mesmoNivel(PONT raiz, int x, int y){
+    int nivelX= nivelNo(raiz, x, 0);
+    int nivelY = nivelNo(raiz, y, 0);
+    return(nivelX != -1&& nivelX==nivelY);
+}
+
+int somaValor(PONT raiz){
+    if(raiz ==NULL){
+        return 0;
+    }
+    return raiz->chave+ somaValores(raiz->esq)+ somaValor(raiz->dir);
+    
 }
 
 PONT rotacaoL(PONT p){

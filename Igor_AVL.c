@@ -98,6 +98,19 @@ void imprimirDesenho(PONT raiz, int espaco){
     }
 }   
 
+int  contadorNos(PONT raiz)
+{
+    if (raiz == NULL) return 0;
+    return 1 + contadorNos(raiz->esq) + contadorNos(raiz->dir);
+}
+
+
+int contadorFolhas(PONT raiz)
+{
+    if (raiz == NULL) return 0;
+    if (raiz->esq == NULL && raiz->dir == NULL) return 1;
+    return contadorFolhas(raiz->esq) + contadorFolhas(raiz->dir);
+}
 
 PONT rotacaoL(PONT p){
 	printf("Rotacao a esquerda, problema no no: %i\n",p->chave);
@@ -393,7 +406,8 @@ int main(){
 
     do{
         printf("Escolha uma das opções:\n");
-        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Sair\n");
+        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui  0.Sair\n");
+        printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
         if(opcao<=0 || opcao>6){
@@ -445,8 +459,31 @@ int main(){
                 printf("\n");
                 break;
 
-            
             case 6:
+                printf("Maior valor da AVL: %d\n", maiorAEsquerda(raiz, &raiz)->chave);
+                printf("Menor valor da AVL: %d\n", raiz->chave);
+                break;
+            
+            case 7: 
+                printf("Digite o valor de K: ");
+                scanf("%d", &chave);
+                if (chave > 0 && chave <= altura(raiz) + 1) {
+                    printf("O %d-ésimo menor valor da AVL é: %d\n", chave, raiz->chave); // Implementar lógica para encontrar o K-ésimo menor valor
+                } else {
+                    printf("Valor de K inválido!\n");
+                }
+                break;
+            case 8:
+                printf("Verifica se está no mesmo nível: \n"); // Implementar lógica para verificar se dois nós estão no mesmo nível
+                break;
+            case 9:
+                printf("Soma de valores: \n"); // Implementar lógica para calcular a soma dos valores da AVL
+                break;
+            case 10:
+                printf("Total de folhas que AVL possui: \n"); // Implementar lógica para contar o total de folhas da AVL
+                break;
+            
+            case 0:
                 printf("Ok, finalizando o programa...");
                 printf("Obrigado :)");
                 break;

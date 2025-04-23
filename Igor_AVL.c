@@ -121,12 +121,13 @@ int nivelNo(PONT raiz, int chave, int nivel){
     return nivelNo(raiz->dir, chave, nivel+1);
 }
 
-int altura(PONT raiz){
-    if (raiz== NULL)return -1;
+int MostraAltura(PONT raiz) {
+    if (raiz == NULL) return -1;
     int altEsq = altura(raiz->esq);
     int altDir = altura(raiz->dir);
-    return(altEsq> altDir> ? altEsq: altDir);
+    return (altEsq > altDir ? altEsq : altDir) + 1;
 }
+
 
 int mesmoNivel(PONT raiz, int x, int y){
     int nivelX= nivelNo(raiz, x, 0);
@@ -138,7 +139,7 @@ int somaValor(PONT raiz){
     if(raiz ==NULL){
         return 0;
     }
-    return raiz->chave+ somaValores(raiz->esq)+ somaValor(raiz->dir);
+    return raiz->chave+ somaValor(raiz->esq)+ somaValor(raiz->dir);
     
 }
 

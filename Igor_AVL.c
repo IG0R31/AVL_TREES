@@ -106,7 +106,11 @@ void imprimirDesenho(PONT raiz, int espaco){
         printf("AVL vazia!\n");
         return;
     }
-}   
+    printf("Estrutura da AVL:\n");
+    printf("(O número entre colchetes é o fator de balanceamento)\n");
+    imprimirHierarquiaAVL(raiz,"",0);
+}
+  
 
 int  contadorNos(PONT raiz)
 {
@@ -447,7 +451,7 @@ int main(){
 
     do{
         printf("Escolha uma das opções:\n");
-        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui  0.Sair\n");
+        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui\n 11.Desenho Hieraquico da AVL\n 0.Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -523,7 +527,12 @@ int main(){
             case 10:
                 printf("Total de folhas que AVL possui: \n"); // Implementar lógica para contar o total de folhas da AVL
                 break;
-            
+            case 11:
+                printf("Aqui está o Desenho Hierárquico da AVL que você construiu: \n\n");
+                imprimirDesenho(raiz);
+                printf("\n");
+                break;
+
             case 0:
                 printf("Ok, finalizando o programa...");
                 printf("Obrigado :)");

@@ -67,34 +67,44 @@ void exibirArvore(PONT raiz){
 	exibirArvore(raiz->dir);
 	printf(")");     
 }
-
-void EspacosAVL(int contador){
-    for(int i=0; i<contador; i++)
-    printf(" ");
+//convertendo meu número em String
+char* Transforma_string(int num){
+    char* str = malloc(20 * sizeof(char));
+    sprintf(str, "%d", num);
+    return str;
 }
 
+//variável de impressão que mostra de forma hierarquica a AVL junto com o fator de balanceamento. 
+//Raiz
+//   Raiz[0]
+//  ├──Filho[0]
+//  │   ├──Neto[0]
+//  │   └──Neto[0]
+//  └──Neto[0]
+// exemplo encontado em https://www.baeldung.com/java-print-binary-tree-diagram
+void imprimirHierarquiaAVL(PONT no, const char* prefixo, int isLeft){
+    if(no!=NULL){
+        printf("%s", prefixo);
+        printf("%s", isLeft);
+
+        printf("%d[%d]\n", no->chave, no->bal);
+        
+        char* novoPrefixo = malloc((strlen(prefixo)+5)* sizeof(char));
+        strcpy(novoPrefixo, prefixo);
+        strcat(novoPrefixo, isLeft ? "│   " : "    ");
+
+        imprimirHierarquiaAVL(no->esq, novoPrefixo, 1);
+        imprimirHierarquiaAVL(no->dir, novoPrefixo,0);
+
+        free(novoPrefixo);
+
+    }
+}
+//inicializador de impressão
 void imprimirDesenho(PONT raiz, int espaco){
-    if(raiz== NULL)
-    return;
-
-    espaco+= 5;
-    imprimirDesenho(raiz->dir, espaco);
-
-    printf("\n");
-    EspacosAVL(espaco - 5);
-    printf("%d\n", raiz-> chave);
-
-    if(raiz->esq !=NULL|| raiz->dir != NULL){
-        EspacosAVL(espaco - 3);
-        if(raiz->esq !=NULL && raiz->dir != NULL)
-            printf("/   \\\n");
-        else if (raiz->esq !=NULL){
-            printf("/\n");
-        }
-        else if(raiz-> dir!= NULL){
-            printf("\\\n");
-        }
-    imprimirDesenho(raiz->esq, espaco);
+    if(raiz ==NULL){
+        printf("AVL vazia!\n");
+        return;
     }
 }   
 
@@ -134,7 +144,7 @@ int mesmoNivel(PONT raiz, int x, int y){
     int nivelY = nivelNo(raiz, y, 0);
     return(nivelX != -1&& nivelX==nivelY);
 }
-
+ 
 int somaValor(PONT raiz){
     if(raiz ==NULL){
         return 0;

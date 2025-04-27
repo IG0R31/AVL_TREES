@@ -331,6 +331,23 @@ void inserirAVL(PONT* pp, TIPOCHAVE ch, bool* alterou){
 }
 
 
+void kesimoAux(PONT raiz, int* k, int* resultado){
+    if (raiz == NULL || *k<=0) return; 
+    kesimoAux(raiz->esq, k, resultado);
+    (*k)--;
+    if(*k == 0) {
+        *resultado = raiz->chave; 
+        return;
+    }
+    kesimoAux(raiz->dir, k, resultado);
+}
+
+int kesimoMenor(PONT raiz, int k){
+    int resultado = -1; 
+    kesimoAux(raiz, &k, &resultado);
+    return resultado;
+}
+
 PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
 	if (raiz == NULL) return NULL;
 	if (raiz->chave == ch) return raiz;
@@ -550,8 +567,8 @@ int main(){
                 break;
 
             case 6:
-                printf("Maior valor da AVL: %d\n", maiorAEsquerda(raiz, &raiz)->chave);
-                printf("Menor valor da AVL: %d\n", raiz->chave);
+                printf("Maior valor da AVL: %d\n", encontraMaior(raiz, &raiz)->chave);
+                printf("Menor valor da AVL: %d\n", encontraMenor(raiz)->chave);
                 break;
             
             case 7: 

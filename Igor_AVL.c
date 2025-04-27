@@ -54,8 +54,8 @@ void exibirArvorePreOrdem(PONT raiz){
 
 void exibirArvorePosOrdem(PONT raiz){
 	if (raiz == NULL) return;
-	exibirArvorePreOrdem(raiz->esq);
-	exibirArvorePreOrdem(raiz->dir);
+	exibirArvorePosOrdem(raiz->esq);
+	exibirArvorePosOrdem(raiz->dir);
 	printf("%i ",raiz->chave);
 }
 
@@ -172,6 +172,26 @@ int mesmoNivel(PONT raiz, TIPOCHAVE x, TIPOCHAVE y){
     int nivelY = nivelNo(raiz, y, 0);
     return(nivelX != -1&& nivelX==nivelY);
 }
+
+PONT encontraMaior(PONT raiz){
+    if(!raiz) return NULL;
+    PONT atual = raiz;
+    while(atual->dir != NULL){
+        atual = atual->dir;
+    }
+    return atual;
+}
+
+PONT encontraMenor(PONT raiz){
+    if(!raiz) return NULL;
+    PONT atual = raiz;
+    while(atual->esq != NULL){
+        atual = atual->esq;
+    }
+    return atual;
+}
+
+
 
 int todasFolhasMesmoNivel(PONT raiz){
     int nivelFolha = -1;
@@ -475,9 +495,9 @@ int main(){
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
-        if(opcao<=0 || opcao>6){
+        if(opcao<=0 || opcao>11){
             printf("Por favor escolha um das opções abaixo");
-            continue;;  
+            continue; 
         }
         switch(opcao){
             case 1:

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h> 
+#include <windows.h>
 #define true 1
 #define false 0
 
@@ -90,6 +91,10 @@ void imprimirHierarquiaAVL(PONT no, const char* prefixo, int isLeft){
         printf("%d[%d]\n", no->chave, no->bal);
         
         char* novoPrefixo = malloc((strlen(prefixo)+5)* sizeof(char));
+        if (novoPrefixo == NULL) {
+            fprintf(stderr, "Erro ao alocar memória para novoPrefixo.\n");
+            exit(EXIT_FAILURE);
+        }
         strcpy(novoPrefixo, prefixo);
         strcat(novoPrefixo, isLeft ? "│   " : "    ");
 
@@ -505,10 +510,17 @@ int main(){
     bool alterou;
     TIPOCHAVE chave;
     int opcao;
+    SetConsoleOutputCP(65001); // Configura a saída do console para UTF-8
 
     do{
-        printf("Escolha uma das opções:\n");
-        printf("---MENU ARVORE DE BUSCA  BALANCEADA--\n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui\n 11.Desenho Hieraquico da AVL\n 0.Sair\n");
+        printf("\n");
+        printf("┌─────┬─────┬─────┬─────┐  ┌─────┬─────┬─────┐\n");
+        printf("│  M  │  E  │  N  │  U  │  │  A  │  V  │  L  │\n");
+        printf("└─┬─┬─┴─┬─┬─┴─┬─┬─┴─┬─┬─┘  └─┬─┬─┴─┬─┬─┴─┬─┬─┘\n");
+        printf("  │ │   │ │   │ │   │ │      │ │   │ │   │ │\n");
+        printf("  └─┘   └─┘   └─┘   └─┘      └─┘   └─┘   └─┘\n");
+        printf("\n");
+        printf("   Selecione uma das opcoes  abaixo \n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui\n 11.Desenho Hieraquico da AVL\n 0.Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -567,7 +579,7 @@ int main(){
                 break;
 
             case 6:
-                printf("Maior valor da AVL: %d\n", encontraMaior(raiz, &raiz)->chave);
+                printf("Maior valor da AVL: %d\n", encontraMaior(raiz)->chave);
                 printf("Menor valor da AVL: %d\n", encontraMenor(raiz)->chave);
                 break;
             
@@ -588,13 +600,14 @@ int main(){
                 printf("Diga o segundo valor:");
                 scanf("%d", &y);
                 if(mesmoNivel(raiz, x ,y)){
-                    printf("OS NÓS ESTÃO NO MESMO NÍVEL\N");
+                    printf("OS NÓS ESTÃO NO MESMO NÍVEL\n");
                 }else{
-                    printf("OS NÓS NÃO ESTÃO NO MESMO NÍVEL\N");
+                    printf("OS NÓS NÃO ESTÃO NO MESMO NÍVEL\n");
                 }
                 break;
             case 9:
-                printf("Soma de valores é: %d\n", somaValor(raiz));
+                printf("Soma de valores é: %i \n", somaValor(raiz));
+                break;
             case 10:
                 printf("Total de folhas que AVL possui: \n", contadorFolhas(raiz)); // Implementar lógica para contar o total de folhas da AVL
                 break;

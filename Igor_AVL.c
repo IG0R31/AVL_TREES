@@ -565,14 +565,21 @@ int main(){
                 break;
             case 8:
                 printf("Verifica se está no mesmo nível: \n");
-
-                 // Implementar lógica para verificar se dois nós estão no mesmo nível
+                TIPOCHAVE x, y;
+                printf("Diga o primeiro valor:");
+                scanf("%d", &x);
+                printf("Diga o segundo valor:");
+                scanf("%d", &y);
+                if(mesmoNivel(raiz, x ,y)){
+                    printf("OS NÓS ESTÃO NO MESMO NÍVEL\N");
+                }else{
+                    printf("OS NÓS NÃO ESTÃO NO MESMO NÍVEL\N");
+                }
                 break;
             case 9:
-                printf("Soma de valores: \n"); // Implementar lógica para calcular a soma dos valores da AVL
-                break;
+                printf("Soma de valores é: %d\n", somaValor(raiz));
             case 10:
-                printf("Total de folhas que AVL possui: \n"); // Implementar lógica para contar o total de folhas da AVL
+                printf("Total de folhas que AVL possui: \n", contadorFolhas(raiz)); // Implementar lógica para contar o total de folhas da AVL
                 break;
             case 11:
                 printf("Aqui está o Desenho Hierárquico da AVL que você construiu: \n\n");
@@ -585,7 +592,7 @@ int main(){
                 printf("Obrigado :)");
                 break;
         }
-    }while (opcao != 6);
+    }while (opcao != 0);
 
     destruirArvore(&raiz);
     return 0;

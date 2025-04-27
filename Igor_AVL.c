@@ -135,6 +135,30 @@ int nivelNo(PONT raiz, int chave, int nivel){
     return nivelNo(raiz->dir, chave, nivel+1);
 }
 
+int verificarNivelFolhas(PONT raiz, int nivelAtual, int* nivelFolha) {
+    if (raiz == NULL) return true;
+    if (raiz->esq == NULL && raiz->dir == NULL) {
+        if (*nivelFolha == -1) {
+            *nivelFolha = nivelAtual;
+            return true;
+        } else {
+            return (nivelAtual == *nivelFolha);
+        }
+    }
+    return verificarNivelFolhas(raiz->esq, nivelAtual + 1, nivelFolha) && verificarNivelFolhas(raiz->dir, nivelAtual + 1, nivelFolha);
+}
+
+
+int totalFolhas(PONT raiz) {
+    int nivelFolha = -1;
+    if (verificarNivelFolhas(raiz, 0, &nivelFolha)){
+        return contadorFolhas(raiz);
+    }else{
+        return 0;
+     }
+}
+
+
 int MostraAltura(PONT raiz) {
     if (raiz == NULL) return -1;
     int altEsq = altura(raiz->esq);
@@ -148,7 +172,12 @@ int mesmoNivel(PONT raiz, int x, int y){
     int nivelY = nivelNo(raiz, y, 0);
     return(nivelX != -1&& nivelX==nivelY);
 }
- 
+
+int todasFolhasMesmoNivel(PONT raiz){
+    int nivelFolha = -1;
+    return verificarNivelFolhas(raiz, 0, &nivelFolha);
+}
+
 int somaValor(PONT raiz){
     if(raiz ==NULL){
         return 0;
@@ -222,66 +251,59 @@ PONT rotacaoR(PONT p){
 
 
 void inserirAVL(PONT* pp, TIPOCHAVE ch, bool* alterou){
-    // p aponta para o nó atual da subárvore
+   
     PONT p = *pp;
     
-    // Se o nó atual é NULL, então chegamos à posição de inserção
+    
     if(!p){
-        // Cria um novo nó com a chave ch e o coloca na posição de *pp
+
         *pp = criarNovoNo(ch);
-        // Indica que houve alteração (a altura aumentou)
+        
         *alterou = true;
     } else {
-        // Se a chave já existe no nó atual, não há alteração (não permite duplicatas)
+       
         if(ch == p->chave) 
             *alterou = false;
-        // Se a chave a inserir é menor ou igual à chave do nó atual, vamos para a subárvore esquerda
+        
         else if(ch <= p->chave) {
-            // Chamada recursiva para inserir na subárvore esquerda
+        
             inserirAVL(&(p->esq), ch, alterou);
-            // Se a subárvore esquerda foi alterada, precisamos atualizar o fator de balanceamento
+  
             if(*alterou)
                 switch (p->bal) {
-                    // Caso 1: p->bal era 1 (a subárvore direita era mais alta)
-                    // Agora, com a inserção na esquerda, os dois lados ficam equilibrados
+                   
                     case 1:
-                        p->bal = 0;      // O nó fica balanceado
-                        *alterou = false; // Não há mais alteração para propagar
+                        p->bal = 0;      
+                        *alterou = false;
                         break;
-                    // Caso 2: p->bal era 0 (a árvore estava balanceada)
-                    // A inserção na esquerda faz com que o lado esquerdo fique mais alto
+                   
                     case 0:
-                        p->bal = -1;     // Aumenta a altura do lado esquerdo
+                        p->bal = -1;     
                         break;
-                    // Caso 3: p->bal era -1 (a subárvore esquerda já era mais alta)
-                    // Com a nova inserção, o fator de balanceamento fica em -2 e é necessário rebalancear
+                   
                     case -1:
-                        *pp = rotacaoL(p); // Realiza a rotação à esquerda para rebalancear
-                        *alterou = false;  // O rebalanceamento corrige a altura, não há mais alteração a propagar
+                        *pp = rotacaoL(p); 
+                        *alterou = false; 
                         break;
                 }
-        } else { // Caso a chave seja maior que a chave do nó atual: inserir na subárvore direita
-            // Chamada recursiva para inserir na subárvore direita
+        } else { 
             inserirAVL(&(p->dir), ch, alterou);
-            // Se a subárvore direita foi alterada, atualizar o fator de balanceamento
+            
             if(*alterou)
                 switch (p->bal) {
-                    // Caso 1: p->bal era -1 (a subárvore esquerda era mais alta)
-                    // Agora, com a inserção na direita, ambos os lados ficam equilibrados
+                
                     case -1:
-                        p->bal = 0;      // O nó fica balanceado
-                        *alterou = false; // Não há mais alteração para propagar
+                        p->bal = 0;     
+                        *alterou = false;
                         break;
-                    // Caso 2: p->bal era 0 (a árvore estava balanceada)
-                    // A inserção na direita faz com que o lado direito fique mais alto
+                  
                     case 0:
-                        p->bal = 1;      // Aumenta a altura do lado direito
+                        p->bal = 1;     
                         break;
-                    // Caso 3: p->bal era 1 (a subárvore direita já era mais alta)
-                    // Com a nova inserção, o fator de balanceamento fica em +2 e é necessário rebalancear
+                 
                     case 1:
-                        *pp = rotacaoR(p); // Realiza a rotação à direita para rebalancear
-                        *alterou = false;  // O rebalanceamento corrige a altura, não há mais alteração a propagar
+                        *pp = rotacaoR(p); 
+                        *alterou = false; 
                         break;
                 }
         }
@@ -325,66 +347,65 @@ PONT maiorAEsquerda(PONT p, PONT *ant){
 
 
 bool excluirAVL(PONT* raiz, TIPOCHAVE ch, bool* alterou) {
-    // Pega o nó atual apontado por *raiz
+   
     PONT atual = *raiz;
 
-    // Se o nó atual for NULL, a chave não foi encontrada; não há alteração
+   
     if (!atual) {
         *alterou = false;
         return false;
     }
 
-    // Se a chave do nó atual é a que desejamos excluir...
+   
     if (atual->chave == ch) {
         PONT substituto, pai_substituto;
-        // Se o nó atual tem zero ou um filho
+       
         if (!atual->esq || !atual->dir) {
-            // Escolhe o filho existente (ou NULL, se nenhum existir)
+         
             if (atual->esq)
                 substituto = atual->esq;
             else
                 substituto = atual->dir;
-            // Atualiza o ponteiro para o nó atual, removendo-o da árvore
+           
             *raiz = substituto;
-            // Libera a memória do nó excluído
+           
             free(atual);
-            // Indica que a altura da subárvore foi alterada
+          
             *alterou = true;
             return true;
         }
         else {
-            // Se o nó tem dois filhos, encontra o maior nó da subárvore esquerda
+           
             substituto = maiorAEsquerda(atual, &pai_substituto);
-            // Copia a chave do substituto para o nó atual
+          
             atual->chave = substituto->chave;
-            // Atualiza ch para continuar a exclusão do nó que continha a chave duplicada
-            ch = substituto->chave; // continua o código excluindo o substituto
+          
+            ch = substituto->chave;
         }
     }
     
     bool res;
-    // Se a chave a ser excluída é maior que a chave do nó atual,
-    // a exclusão deve ocorrer na subárvore direita
+    
     if (ch > atual->chave) {
         res = excluirAVL(&(atual->dir), ch, alterou);
-        // Imprime mensagem para depuração (opcional) informando a exclusão na direita
+        
         printf("Excluir recursivo a direita: %i(%i)\n", atual->chave, atual->bal); 
-        // Se houve alteração na altura da subárvore direita, atualiza o fator de balanceamento do nó atual
+       
         if (*alterou) {
             switch (atual->bal) {
-                // Caso 1: se o fator era 1 (direita mais alta), a exclusão equilibrou o nó
+             
                 case 1:
                     atual->bal = 0;
                     return true;
-                // Caso 2: se o fator era 0, a exclusão faz com que o lado esquerdo fique mais alto (-1)
+              
                 case 0:
                     atual->bal = -1;
-                    *alterou = false; // a altura do nó atual não diminuiu, não há propagação da alteração
+                    *alterou = false;
                     return true;
-                // Caso 3: se o fator era -1, a exclusão gera desbalanceamento (-2) e é necessária uma rotação à esquerda
+               
                 case -1:
                     *raiz = rotacaoL(atual);
-                    // Se, após a rotação, o fator de balanceamento não zerar, a alteração não se propaga
+                
                     if (atual->bal != 0)
                         *alterou = false;
                     return true;
@@ -392,24 +413,23 @@ bool excluirAVL(PONT* raiz, TIPOCHAVE ch, bool* alterou) {
         }
     }
     else {
-        // Se a chave a ser excluída é menor ou igual à chave do nó atual,
-        // a exclusão deve ocorrer na subárvore esquerda
+      
         res = excluirAVL(&(atual->esq), ch, alterou);
-        // Imprime mensagem para depuração (opcional) informando a exclusão na esquerda
+    
         printf("Excluir recursivo a esquerda: %i(%i)\n", atual->chave, atual->bal); 
-        // Se houve alteração na altura da subárvore esquerda, atualiza o fator de balanceamento
+        
         if (*alterou) {
             switch (atual->bal) {
-                // Caso 1: se o fator era -1 (esquerda mais alta), a exclusão equilibrou o nó
+             
                 case -1:
                     atual->bal = 0;
                     return true;
-                // Caso 2: se o fator era 0, a exclusão faz com que o lado direito fique mais alto (1)
+           
                 case 0:
                     atual->bal = 1;
-                    *alterou = false; // a altura não diminuiu, não há propagação da alteração
+                    *alterou = false; 
                     return true;
-                // Caso 3: se o fator era 1, a exclusão gera desbalanceamento (fator 2) e é necessária uma rotação à direita
+        
                 case 1:
                     *raiz = rotacaoR(atual);
                     if (atual->bal != 0)
@@ -418,7 +438,7 @@ bool excluirAVL(PONT* raiz, TIPOCHAVE ch, bool* alterou) {
             }
         }
     }
-    // Retorna o resultado da operação (a variável res contém o valor retornado pela chamada recursiva)
+
     return res;
 }
 
@@ -513,13 +533,15 @@ int main(){
                 printf("Digite o valor de K: ");
                 scanf("%d", &chave);
                 if (chave > 0 && chave <= altura(raiz) + 1) {
-                    printf("O %d-ésimo menor valor da AVL é: %d\n", chave, raiz->chave); // Implementar lógica para encontrar o K-ésimo menor valor
+                    printf("O %d-ésimo menor valor da AVL é: %d\n", chave, raiz->chave); 
                 } else {
                     printf("Valor de K inválido!\n");
                 }
                 break;
             case 8:
-                printf("Verifica se está no mesmo nível: \n"); // Implementar lógica para verificar se dois nós estão no mesmo nível
+                printf("Verifica se está no mesmo nível: \n");
+
+                 // Implementar lógica para verificar se dois nós estão no mesmo nível
                 break;
             case 9:
                 printf("Soma de valores: \n"); // Implementar lógica para calcular a soma dos valores da AVL

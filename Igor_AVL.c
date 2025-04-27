@@ -85,7 +85,7 @@ char* Transforma_string(int num){
 void imprimirHierarquiaAVL(PONT no, const char* prefixo, int isLeft){
     if(no!=NULL){
         printf("%s", prefixo);
-        printf("%s", isLeft);
+        printf("%s", isLeft ? "├──" : "└──");
 
         printf("%d[%d]\n", no->chave, no->bal);
         
@@ -101,7 +101,7 @@ void imprimirHierarquiaAVL(PONT no, const char* prefixo, int isLeft){
     }
 }
 //inicializador de impressão
-void imprimirDesenho(PONT raiz, int espaco){
+void imprimirDesenho(PONT raiz){
     if(raiz ==NULL){
         printf("AVL vazia!\n");
         return;
@@ -480,12 +480,17 @@ int main(){
             continue;;  
         }
         switch(opcao){
-            case 1:    
-                printf("Digite o valor da chave: ");
-                scanf("%d", &chave);
-                alterou = false;
-                inserirAVL(&raiz, chave, &alterou);
-                printf("Chave %d inserida! ", chave);
+            case 1:
+                printf("Quantos valores deseja inserir? ");
+                int n;
+                scanf("%d", &n);
+                for(int i= 0; i<n; i++){    
+                    printf("Digite o valor da chave: ");
+                    scanf("%d", &chave);
+                    alterou = false;
+                    inserirAVL(&raiz, chave, &alterou);
+                    printf("Chave %d inserida! ", chave);
+                    }
                 break;
             
             case 2:
@@ -520,7 +525,7 @@ int main(){
                 
             case 5:
                 printf("Esta é a representação em desenho da AVL: \n\n");
-                imprimirDesenho(raiz,0);
+                imprimirDesenho(raiz);
                 printf("\n");
                 break;
 

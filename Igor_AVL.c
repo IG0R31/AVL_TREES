@@ -167,7 +167,7 @@ int MostraAltura(PONT raiz) {
 }
 
 
-int mesmoNivel(PONT raiz, int x, int y){
+int mesmoNivel(PONT raiz, TIPOCHAVE x, TIPOCHAVE y){
     int nivelX= nivelNo(raiz, x, 0);
     int nivelY = nivelNo(raiz, y, 0);
     return(nivelX != -1&& nivelX==nivelY);

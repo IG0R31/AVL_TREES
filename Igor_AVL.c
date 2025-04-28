@@ -87,7 +87,7 @@
             
             char* novoPrefixo = malloc((strlen(prefixo)+5)* sizeof(char));
             if (novoPrefixo == NULL) {
-                fprintf(stderr, "Erro ao alocar memória para novoPrefixo.\n");
+                fprintf(stderr, "Erro ao alocar memoria para novoPrefixo.\n");
                 exit(EXIT_FAILURE);
             }
             strcpy(novoPrefixo, prefixo);
@@ -107,7 +107,7 @@
             return;
         }
         printf("Estrutura da AVL:\n");
-        printf("(O número entre colchetes é o fator de balanceamento)\n");
+        printf("(O numero entre colchetes e o fator de balanceamento)\n");
         imprimirHierarquiaAVL(raiz,"",0);
     }
     
@@ -500,13 +500,6 @@
 
 
     int main(){
-    // Definindo o locale para UTF-8 para suportar caracteres especiais
-        setlocale(LC_ALL,"");
-        #ifdef _WIN32
-            system("chcp 65001 > nul");
-        #endif
-
-
         PONT raiz;
         inicializar(&raiz);
         bool alterou;
@@ -515,18 +508,18 @@
 
         do{
             printf("\n");
-            printf("┌─────┬─────┬─────┬─────┐  ┌─────┬─────┬─────┐\n");
-            printf("│  M  │  E  │  N  │  U  │  │  A  │  V  │  L  │\n");
-            printf("└─┬─┬─┴─┬─┬─┴─┬─┬─┴─┬─┬─┘  └─┬─┬─┴─┬─┬─┴─┬─┬─┘\n");
-            printf("  │ │   │ │   │ │   │ │      │ │   │ │   │ │\n");
-            printf("  └─┘   └─┘   └─┘   └─┘      └─┘   └─┘   └─┘\n");
+            printf(" _______________________   ___________________\n");
+            printf("|     |     |     |     |  |     |     |     |\n");
+            printf("|  M  |  E  |  N  |  U  |  |  A  |  V  |  L  |\n");
+            printf("|_____|_____|_____|_____|  |_____|_____|_____|\n");
+        
             printf("\n");
-            printf("   Selecione uma das opcoes  abaixo \n1.Inserir Chave\n 2.Exibir AVL em Ordem\n 3.Buscar Chave\n 4.Excluir Chave\n 5.Exibir Desenho\n 6.Maior e Menor Valor AVL\n 7.K-esimo Menor Valor AVL\n 8.Verifica se está no mesmo nível\n 9.Soma de valores\n 10.Total de folhas que AVL possui\n 11.Desenho Hieraquico da AVL\n 0.Sair\n");
-            printf("Escolha uma opção: ");
+            printf("   Selecione uma das opcoes  abaixo \n  1.Inserir Chave\n  2.Exibir AVL em Ordem\n  3.Buscar Chave\n  4.Excluir Chave\n  5.Exibir Desenho\n  6.Maior e Menor Valor AVL\n  7.K-esimo Menor Valor AVL\n  8.Verifica se esta no mesmo nivel\n  9.Soma de valores\n  10.Total de folhas que AVL possui\n  11.Desenho Hieraquico da AVL\n  0.Sair\n");
+            printf(" Escolha uma opcao: ");
             scanf("%d", &opcao);
 
-            if(opcao<=0 || opcao>11){
-                printf("Por favor escolha um das opções abaixo");
+            if(opcao<=0 || opcao>10){
+                printf("Por favor escolha um das opcoes abaixo");
                 continue; 
             }
             switch(opcao){
@@ -563,18 +556,18 @@
                     
                 
                     case 4: 
-                        printf("Digite a chave para ser excluída: ");
+                        printf("Digite a chave para ser excluida: ");
                         scanf("%d", &chave);
                         alterou = false;
                         if (excluirAVL(&raiz, chave, &alterou)) {
-                            printf("Chave %d foi excluída!!\n", chave);
+                            printf("Chave %d foi excluida!!\n", chave);
                         } else {
-                            printf("Chave %d não encontrada!\n", chave);
+                            printf("Chave %d nao encontrada!\n", chave);
                         }
                         break;
                     
                 case 5:
-                    printf("Esta é a representação em desenho da AVL: \n\n");
+                    printf("Esta e a representacao em desenho da AVL: \n\n");
                     imprimirDesenho(raiz);
                     printf("\n");
                     break;
@@ -588,7 +581,7 @@
                     printf("Digite o valor de K: ");
                     scanf("%d", &chave);
                     if (chave > 0 && chave <= altura(raiz) + 1) {
-                        printf("O %d-ésimo menor valor da AVL é: %d\n", chave, raiz->chave); 
+                        printf("O %d-esimo menor valor da AVL e: %d\n", chave, raiz->chave); 
                     } else {
                         printf("Valor de K inválido!\n");
                     }
@@ -601,23 +594,18 @@
                     printf("Diga o segundo valor:");
                     scanf("%d", &y);
                     if(mesmoNivel(raiz, x ,y)){
-                        printf("OS NÓS ESTÃO NO MESMO NÍVEL\n");
+                        printf("OS NOS ESTAO NO MESMO NIVEL\n");
                     }else{
-                        printf("OS NÓS NÃO ESTÃO NO MESMO NÍVEL\n");
+                        printf("OS NOS NAO ESTAO NO MESMO NIVEL\n");
                     }
                     break;
                 case 9:
                     printf("Soma de valores é: %i \n", somaValor(raiz));
                     break;
                 case 10:
-                    printf("Total de folhas que AVL possui: \n", contadorFolhas(raiz)); // Implementar lógica para contar o total de folhas da AVL
+                    printf("Total de folhas que AVL possui: \n", contadorFolhas(raiz));
                     break;
-                case 11:
-                    printf("Aqui está o Desenho Hierárquico da AVL que você construiu: \n\n");
-                    imprimirDesenho(raiz);
-                    printf("\n");
-                    break;
-
+         
                 case 0:
                     printf("Ok, finalizando o programa...");
                     printf("Obrigado :)");

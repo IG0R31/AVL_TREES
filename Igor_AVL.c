@@ -41,7 +41,7 @@
     void exibirArvoreEmOrdem(PONT raiz){
         if (raiz == NULL) return;
         exibirArvoreEmOrdem(raiz->esq);
-        printf("%i ",raiz->chave);
+        printf("(%i) ",raiz->chave);
         exibirArvoreEmOrdem(raiz->dir);
     }
 
@@ -331,22 +331,24 @@
     }
 
 
-    void kesimoAux(PONT raiz, int* k, int* resultado){
-        if (raiz == NULL || *k<=0) return; 
+    void kesimoAux(PONT raiz, int* k, int* resultado) {
+        if (raiz == NULL || *k <= 0) return; 
         kesimoAux(raiz->esq, k, resultado);
+        if (*k == 0) return; // Interrompe se o k-ésimo menor já foi encontrado
         (*k)--;
-        if(*k == 0) {
+        if (*k == 0) {
             *resultado = raiz->chave; 
             return;
         }
         kesimoAux(raiz->dir, k, resultado);
     }
 
-    int kesimoMenor(PONT raiz, int k){
+    int kesimoMenor(PONT raiz, int k) {
         int resultado = -1; 
         kesimoAux(raiz, &k, &resultado);
         return resultado;
     }
+
 
     PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
         if (raiz == NULL) return NULL;
@@ -514,7 +516,7 @@
             printf("|_____|_____|_____|_____|  |_____|_____|_____|\n");
         
             printf("\n");
-            printf("   Selecione uma das opcoes  abaixo \n  1.Inserir Chave\n  2.Exibir AVL em Ordem\n  3.Buscar Chave\n  4.Excluir Chave\n  5.Exibir Desenho\n  6.Maior e Menor Valor AVL\n  7.K-esimo Menor Valor AVL\n  8.Verifica se esta no mesmo nivel\n  9.Soma de valores\n  10.Total de folhas que AVL possui\n  11.Desenho Hieraquico da AVL\n  0.Sair\n");
+            printf("   Selecione uma das opcoes  abaixo \n  1.Inserir Chave\n  2.Exibir AVL em Ordem\n  3.Buscar Chave\n  4.Excluir Chave\n  5.Exibir Desenho\n  6.Maior e Menor Valor AVL\n  7.K-esimo Menor Valor AVL\n  8.Verifica se esta no mesmo nivel\n  9.Soma de valores\n  10.Total de folhas que AVL possui\n  0.Sair\n");
             printf(" Escolha uma opcao: ");
             scanf("%d", &opcao);
 
@@ -580,12 +582,15 @@
                 case 7: 
                     printf("Digite o valor de K: ");
                     scanf("%d", &chave);
-                    if (chave > 0 && chave <= altura(raiz) + 1) {
-                        printf("O %d-esimo menor valor da AVL e: %d\n", chave, raiz->chave); 
+                    int totalNos = contadorNos(raiz); 
+                    if (chave > 0 && chave <= totalNos) {
+                        int resultado = kesimoMenor(raiz, chave);
+                        printf("O %d-esimo menor valor da AVL e: %d\n", chave, resultado); 
                     } else {
-                        printf("Valor de K inválido!\n");
+                        printf("Valor de K inválido! Deve estar entre 1 e %d.\n", totalNos);
                     }
                     break;
+
                 case 8:
                     printf("Verifica se está no mesmo nível: \n");
                     TIPOCHAVE x, y;
@@ -603,7 +608,7 @@
                     printf("Soma de valores é: %i \n", somaValor(raiz));
                     break;
                 case 10:
-                    printf("Total de folhas que AVL possui: \n", contadorFolhas(raiz));
+                    printf("Total de folhas que AVL possui: %d\n", contadorFolhas(raiz));
                     break;
          
                 case 0:

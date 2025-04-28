@@ -76,13 +76,6 @@
 
 
     //variável de impressão que mostra de forma hierarquica a AVL junto com o fator de balanceamento. 
-    //Raiz
-    //   |Raiz[0]
-    //  |--Filho[0]
-    //  │   |--Neto[0]
-    //  │   |__Neto[0]
-    //  |--Neto[0]
-    // exemplo encontado em https://www.baeldung.com/java-print-binary-tree-diagram
     void imprimirHierarquiaAVL(PONT no, const char* prefixo, int isLeft){
         if(no!=NULL){
             printf("%s", prefixo);

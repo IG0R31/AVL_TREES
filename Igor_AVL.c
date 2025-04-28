@@ -1,7 +1,12 @@
+// **_________________________________________________**
+//  |*TRABALHO DE ESTRUTURAS DE DADOS II, ARVORES AVL*|
+//  |ALUNO: IGOR OLIVEIRA DUARTE                      |
+//  |CURSO: CIENCIA DE DADOS E INTELIGENCIA ARTIFICIAL|
+//  |TURMA: 2000                                      | 
+//  |_________________________________________________| 
     #include <stdio.h>
     #include <malloc.h>
     #include <string.h>
-    #include <locale.h>
     #define true 1
     #define false 0
 
@@ -134,7 +139,7 @@
         }
         return nivelNo(raiz->dir, chave, nivel+1);
     }
-
+    // A função verifica se todas as folhas da árvore AVL estão no mesmo nível. A função percorre a árvore, verificando o nível de cada folha e comparando com o nível da primeira folha encontrada.
     int verificarNivelFolhas(PONT raiz, int nivelAtual, int* nivelFolha) {
         if (raiz == NULL) return true;
         if (raiz->esq == NULL && raiz->dir == NULL) {
@@ -148,7 +153,7 @@
         return verificarNivelFolhas(raiz->esq, nivelAtual + 1, nivelFolha) && verificarNivelFolhas(raiz->dir, nivelAtual + 1, nivelFolha);
     }
 
-
+    // A função totalFolhas calcula o número total de folhas na árvore AVL. Uma folha é um nó que não possui filhos.
     int totalFolhas(PONT raiz) {
         int nivelFolha = -1;
         if (verificarNivelFolhas(raiz, 0, &nivelFolha)){
@@ -158,7 +163,7 @@
         }
     }
 
-
+    // A função calcula a altura da árvore AVL. A altura é definida como o número máximo de arestas entre a raiz e uma folha.
     int MostraAltura(PONT raiz) {
         if (raiz == NULL) return -1;
         int altEsq = altura(raiz->esq);
@@ -166,13 +171,13 @@
         return (altEsq > altDir ? altEsq : altDir) + 1;
     }
 
-
+    // Verifica se dois nós estão no mesmo nível na árvore AVL. A função percorre a árvore, verificando o nível de cada nó e comparando com os níveis dos nós fornecidos.
     int mesmoNivel(PONT raiz, TIPOCHAVE x, TIPOCHAVE y){
         int nivelX= nivelNo(raiz, x, 0);
         int nivelY = nivelNo(raiz, y, 0);
         return(nivelX != -1&& nivelX==nivelY);
     }
-
+    // Encontra o maior valor na árvore AVL. A função percorre a árvore em busca do nó mais à direita, que contém o maior valor.
     PONT encontraMaior(PONT raiz){
         if(!raiz) return NULL;
         PONT atual = raiz;
@@ -181,7 +186,8 @@
         }
         return atual;
     }
-
+    // Encontra o menor valor na árvore AVL. A função percorre a árvore em busca do nó mais à esquerda, que contém o menor valor.
+    // A função retorna o nó correspondente ao menor valor encontrado.
     PONT encontraMenor(PONT raiz){
         if(!raiz) return NULL;
         PONT atual = raiz;
@@ -192,12 +198,14 @@
     }
 
 
-
+    // Verifica se todas as folhas estão no mesmo nível. A função percorre a árvore, verificando o nível de cada folha e comparando com o nível da primeira folha encontrada.
+    // Se todas as folhas estiverem no mesmo nível, a função retorna 1 (verdadeiro); caso contrário, retorna 0 (falso).
     int todasFolhasMesmoNivel(PONT raiz){
         int nivelFolha = -1;
         return verificarNivelFolhas(raiz, 0, &nivelFolha);
     }
-
+    // Soma de todos os valores da árvore AVL. A função percorre a árvore em pré-ordem, somando os valores de cada nó.
+    // A função utiliza recursão para percorrer os nós da árvore e calcular a soma total.
     int somaValor(PONT raiz){
         if(raiz ==NULL){
             return 0;
@@ -330,6 +338,8 @@
         }
     }
 
+    // Função auxiliar para encontrar o k-ésimo menor valor na árvore AVL. A função percorre a árvore em ordem, decrementando o valor de k a cada nó visitado até encontrar o k-ésimo menor valor.
+    // A função utiliza uma variável auxiliar para contar os nós visitados e retorna o k-ésimo menor valor.
 
     void kesimoAux(PONT raiz, int* k, int* resultado) {
         if (raiz == NULL || *k <= 0) return; 
@@ -342,14 +352,16 @@
         }
         kesimoAux(raiz->dir, k, resultado);
     }
-
+    /// Função para encontrar o k-ésimo menor valor na árvore AVL. A função utiliza uma variável auxiliar para contar os nós visitados e retorna o k-ésimo menor valor.
+    /// A função percorre a árvore em ordem, decrementando o valor de k a cada nó visitado até encontrar o k-ésimo menor valor.
     int kesimoMenor(PONT raiz, int k) {
         int resultado = -1; 
         kesimoAux(raiz, &k, &resultado);
         return resultado;
     }
 
-
+    // Busca binária na árvore AVL. A função percorre a árvore comparando a chave procurada com as chaves dos nós, movendo-se para a esquerda ou direita conforme necessário.
+    // A função é chamada recursivamente até que o nó correspondente seja encontrado ou a árvore seja percorrida completamente.
     PONT buscaBinaria(TIPOCHAVE ch, PONT raiz){
         if (raiz == NULL) return NULL;
         if (raiz->chave == ch) return raiz;
@@ -358,7 +370,7 @@
         return buscaBinaria(ch,raiz->esq);
     }  
 
-
+// Busca na árvore AVL e retorna o nó correspondente à chave procurada. A função percorre a árvore comparando a chave procurada com as chaves dos nós, movendo-se para a esquerda ou direita conforme necessário.
     PONT buscaNo(PONT raiz, TIPOCHAVE ch, PONT *pai){
         PONT atual = raiz;
         *pai = NULL;
@@ -370,6 +382,16 @@
             else atual = atual->dir;
         }
         return(NULL);
+    }
+    
+    // Listar valores dentro de um intervalo [a, b]. A função é chamada recursivamente para os nós à esquerda e à direita da árvore.
+    void listarIntervalo(PONT raiz, int c, int d) {
+        if (raiz == NULL) return;
+        if (raiz->chave > c) listarIntervalo(raiz->esq, c, d);
+        if (raiz->chave >= c && raiz->chave <= d) {
+            printf("%d ", raiz->chave);
+        }
+        if (raiz->chave < d) listarIntervalo(raiz->dir, c, d);
     }
 
 
@@ -507,6 +529,7 @@
         bool alterou;
         TIPOCHAVE chave;
         int opcao;
+    
 
         do{
             printf("\n");
@@ -516,11 +539,11 @@
             printf("|_____|_____|_____|_____|  |_____|_____|_____|\n");
         
             printf("\n");
-            printf("   Selecione uma das opcoes  abaixo \n  1.Inserir Chave\n  2.Exibir AVL em Ordem\n  3.Buscar Chave\n  4.Excluir Chave\n  5.Exibir Desenho\n  6.Maior e Menor Valor AVL\n  7.K-esimo Menor Valor AVL\n  8.Verifica se esta no mesmo nivel\n  9.Soma de valores\n  10.Total de folhas que AVL possui\n  0.Sair\n");
+            printf("   Selecione uma das opcoes  abaixo \n  1.Inserir Chave\n  2.Exibir AVL em Ordem\n  3.Buscar Chave\n  4.Excluir Chave\n  5.Exibir Desenho\n  6.Maior e Menor Valor AVL\n  7.K-esimo Menor Valor AVL\n  8.Verifica se esta no mesmo nivel\n  9.Soma de valores\n  10.Total de folhas que AVL possui\n  11.Verificar o Intervalo\n  12.Nivel da Arvore\n  0.Sair\n");
             printf(" Escolha uma opcao: ");
             scanf("%d", &opcao);
 
-            if(opcao<=0 || opcao>10){
+            if(opcao<=0 || opcao>12){
                 printf("Por favor escolha um das opcoes abaixo");
                 continue; 
             }
@@ -537,48 +560,52 @@
                         printf("Chave %d inserida! ", chave);
                         }
                     break;
-                
+                //Caso 2: Exibir a árvore AVL em ordem
+                //A árvore AVL é exibida em ordem crescente, mostrando os valores de cada nó.
                 case 2:
                     printf("AVL em Ordem: ");
                     exibirArvoreEmOrdem(raiz);
                     printf("\n");
                     break;
-                
-                    case 3: {
-                        printf("Digite a chave a ser buscada: ");
-                        scanf("%d", &chave);
-                        PONT resultado = buscaBinaria(chave,raiz);
-                        if(resultado){
-                            printf("Chave %d encontrada!\n", chave);
-                        } else {
-                            printf("Chave %d não encontrada!\n", chave);
-                        }
-                        break;
+                //Caso 3: Buscar Chave
+                //O usuário insere uma chave e o programa verifica se ela está presente na árvore AVL.
+                case 3: {
+                    printf("Digite a chave a ser buscada: ");
+                    scanf("%d", &chave);
+                    PONT resultado = buscaBinaria(chave,raiz);
+                    if(resultado){
+                        printf("Chave %d encontrada!\n", chave);
+                    } else {
+                        printf("Chave %d não encontrada!\n", chave);
                     }
-                    
+                    break;
+                }
                 
-                    case 4: 
-                        printf("Digite a chave para ser excluida: ");
-                        scanf("%d", &chave);
-                        alterou = false;
-                        if (excluirAVL(&raiz, chave, &alterou)) {
-                            printf("Chave %d foi excluida!!\n", chave);
-                        } else {
-                            printf("Chave %d nao encontrada!\n", chave);
-                        }
-                        break;
-                    
+                //Caso 4: Excluir Chave
+                case 4: 
+                    printf("Digite a chave para ser excluida: ");
+                    scanf("%d", &chave);
+                    alterou = false;
+                    if (excluirAVL(&raiz, chave, &alterou)) {
+                        printf("Chave %d foi excluida!!\n", chave);
+                    } else {
+                        printf("Chave %d nao encontrada!\n", chave);
+                    }
+                    break;
+                //Caso 5: Exibir a árvore AVL em formato de desenho
                 case 5:
                     printf("Esta e a representacao em desenho da AVL: \n\n");
                     imprimirDesenho(raiz);
                     printf("\n");
                     break;
-
+                    //Caso 6: Maior e menor valor da AVL
+        
                 case 6:
                     printf("Maior valor da AVL: %d\n", encontraMaior(raiz)->chave);
                     printf("Menor valor da AVL: %d\n", encontraMenor(raiz)->chave);
                     break;
-                
+                //Caso 7: K-ésimo menor valor
+
                 case 7: 
                     printf("Digite o valor de K: ");
                     scanf("%d", &chave);
@@ -590,7 +617,7 @@
                         printf("Valor de K inválido! Deve estar entre 1 e %d.\n", totalNos);
                     }
                     break;
-
+                    //Caso 8: Verifica se dois nós estão no mesmo nível
                 case 8:
                     printf("Verifica se está no mesmo nível: \n");
                     TIPOCHAVE x, y;
@@ -604,13 +631,44 @@
                         printf("OS NOS NAO ESTAO NO MESMO NIVEL\n");
                     }
                     break;
+
+                //Caso 9: Soma de valores
                 case 9:
-                    printf("Soma de valores é: %i \n", somaValor(raiz));
+                    printf("Soma de valores e: %i \n", somaValor(raiz));
                     break;
+
+                //Caso 10: Total de folhas
                 case 10:
                     printf("Total de folhas que AVL possui: %d\n", contadorFolhas(raiz));
                     break;
-         
+
+                //Caso 11: Listar valores em um intervalo
+                case 11:{
+                    if(raiz== NULL){
+                        printf("A arvore esta vazia!\n");
+                        break;
+                    }
+                        printf("Digite o valor do inicio do intervalo: ");
+                        int c, d;
+                        scanf("%d", &c);
+                        printf("Digite o valor do fim do intervalo: ");
+                        scanf("%d", &d);
+                        if(c> d){
+                            printf("O intervalo e invalido!\n");
+                            break;
+                        }
+                        printf("Valores no intervalo [%d, %d]: ", c, d);
+                        listarIntervalo(raiz, c, d); 
+                        printf("\n");
+                        break;
+                }
+                //Caso 12: Altura da árvore AVL    
+                case 12: {
+                    int altura = MostraAltura(raiz);
+                    printf("A altura da arvore AVL e: %d\n", altura);
+                    break;
+                }
+                    
                 case 0:
                     printf("Ok, finalizando o programa...");
                     printf("Obrigado :)");
